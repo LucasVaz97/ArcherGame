@@ -151,7 +151,7 @@ class arrow:
                 self.apple=True
                 self.current_img=applearrow
                 alvo.current_img=pygame.transform.scale(loadSprite("Images\\alvonoapple.png"),(200,200))
-            elif 700<=self.y<=802 and 1260<=self.x<=1300 and self.apple==False:
+            elif 691<=self.y<=802 and 1260<=self.x<=1300 and self.apple==False:
                 self.current_img=hurtarrow
                 self.moveright=False
 
