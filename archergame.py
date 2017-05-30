@@ -85,15 +85,38 @@ class arrow:
     def __init__(self,x,y):
         self.x=x
         self.y=y
-        self.current_img=pygame.transform.scale(loadSprite("arrow.png"),(200,100))
+        self.angulo=""
+        self.current_img=pygame.transform.scale(loadSprite("Images\\arrow.png"),(200,100))
         self.current_frame=0
+        self.apple=False
         self.last_update=0
         self.moveright=False
         self.moveleft=False
 
+    def angulos(self,x):
+        numeros={"1":1,
+                 "2":2,
+                 "3":3,
+                 "4":4,
+                 "5":5,
+                 "6":6,
+                 "7":7,
+                 "8":8,
+                 "9":9,
+                 "0":0}
+        string=str(self.angulo)+str(numeros[x])
+        self.angulo=int(string)
+        if 90<self.angulo<270:
+            self.current_img=pygame.transform.flip(self.current_img,True,False)
+            archer1.current_img=pygame.transform.flip(archer1.current_img,True,False)
+        print(self.angulo)
+        return self.angulo
+
+
+
     def load_images(self):
-        self.arrow=pygame.transform.scale(loadSprite("arrow.png"),(200,100))
-        self.hurtarrow=pygame.transform.scale(loadSprite("hurtarrow.png"),(200,100))
+        self.arrow=pygame.transform.scale(loadSprite("Images\\arrow.png"),(200,100))
+        self.hurtarrow=pygame.transform.scale(loadSprite("Images\\hurtarrow.png"),(200,100))
 
     def move(self,x):
         if x=="right":
@@ -103,16 +126,20 @@ class arrow:
         if x=="again":
             self.x=200
             self.y=733
+            self.angulo=""
             self.current_frame=0
             self.moveright=False
             self.apple=False
-            self.current_img=pygame.transform.scale(loadSprite("arrow.png"),(200,100))
+            self.current_img=pygame.transform.scale(loadSprite("Images\\arrow.png"),(200,100))
+            archer1.current_img=archerC
             alvo.current_img=alvosc
 
     def update(self):
         if self.moveright==True:
-            listax=(angulacao(62)[0])
-            listay=(angulacao(62)[1])
+            if self.angulo=="":
+                self.angulo=45
+            listax=(angulacao(self.angulo)[0])
+            listay=(angulacao(self.angulo)[1])
             ganhox=ganho(listax)
             ganhoy=ganho(listay)
             self.current_frame=(self.current_frame+1)%len(listax)
@@ -123,7 +150,7 @@ class arrow:
             elif 650<self.y<690 and 1240<self.x<1280:
                 self.apple=True
                 self.current_img=applearrow
-                alvo.current_img=pygame.transform.scale(loadSprite("alvonoapple.png"),(200,200))
+                alvo.current_img=pygame.transform.scale(loadSprite("Images\\alvonoapple.png"),(200,200))
             elif 700<=self.y<=802 and 1260<=self.x<=1300 and self.apple==False:
                 self.current_img=hurtarrow
                 self.moveright=False
@@ -136,19 +163,21 @@ class objeto:
         self.y=y
         self.current_img=s
 
-fundo=pygame.image.load("background.png")
-BackiGround1 =pygame.image.load("background.png")
+fundo=pygame.image.load("Images\\background.png")
+BackiGround1 =pygame.image.load("Images\\background.png")
 BackGround=pygame.transform.scale(BackiGround1,(1980,1080))
-archer=loadSprite("archer.png")
+archer=loadSprite("Images\\archer.png")
 archerC=pygame.transform.scale(archer,(200,200))
-alvos=loadSprite("alvo.png")
+alvos=loadSprite("Images\\alvo.png")
 alvosc=pygame.transform.scale(alvos,(200,200))
-hurtarrow=pygame.transform.scale(loadSprite("hurtarrow.png"),(200,100))
-applearrow=pygame.transform.scale(loadSprite("applearrow.png"),(200,100))
-alvonoapple=pygame.transform.scale(loadSprite("alvonoapple.png"),(200,200))
+hurtarrow=pygame.transform.scale(loadSprite("Images\\hurtarrow.png"),(200,100))
+applearrow=pygame.transform.scale(loadSprite("Images\\applearrow.png"),(200,100))
+alvonoapple=pygame.transform.scale(loadSprite("Images\\alvonoapple.png"),(200,200))
 
 arrow1=arrow(200,733)
 alvo=objeto(1300,680,alvosc)
+archer1=objeto(200,680,archerC)
+
 
 
 
@@ -157,8 +186,8 @@ clock=pygame.time.Clock()
 
 while not gameExit:
     gameDisplay.blit(BackGround, (0, 0))
-    gameDisplay.blit(archerC,(200,680))
     gameDisplay.blit(alvo.current_img,(alvo.x,alvo.y))
+    gameDisplay.blit(archer1.current_img,(archer1.x,archer1.y))
     gameDisplay.blit(arrow1.current_img,(arrow1.x,arrow1.y))
 
     for event in pygame.event.get():
@@ -171,6 +200,27 @@ while not gameExit:
                 arrow1.move("left")
             if event.key == pygame.K_s:
                 arrow1.move("again")
+            if event.key == pygame.K_0:
+                arrow1.angulos("0")
+            if event.key == pygame.K_1:
+                arrow1.angulos("1")
+            if event.key == pygame.K_2:
+                arrow1.angulos("2")
+            if event.key == pygame.K_3:
+                arrow1.angulos("3")
+            if event.key == pygame.K_4:
+                arrow1.angulos("4")
+            if event.key == pygame.K_5:
+                arrow1.angulos("5")
+            if event.key == pygame.K_6:
+                arrow1.angulos("6")
+            if event.key == pygame.K_7:
+                arrow1.angulos("7")
+            if event.key == pygame.K_8:
+                arrow1.angulos("8")
+            if event.key == pygame.K_9:
+                arrow1.angulos("9")
+
     arrow1.update()
     clock.tick(120)
     pygame.display.update()
